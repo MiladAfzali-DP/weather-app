@@ -27,3 +27,9 @@ body {
   background-color: var(--neutral-900);
   color: white;
 }
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

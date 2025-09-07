@@ -13,7 +13,7 @@ function App() {
           <Button className="units">
             <img src={unitsIcon} alt="" />
             units
-            <i className="bi bi-caret-down-fill"></i>
+            <i className="bi bi-caret-down-fill icon units-icon"></i>
           </Button>
         </Header>
       </Container>
