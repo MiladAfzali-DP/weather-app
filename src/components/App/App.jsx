@@ -4,6 +4,9 @@ import Header from "../Header/Header";
 import Logo from "../Logo/Logo";
 import Button from "../Button/Button";
 import Container from "../Container/Container";
+import CitySearch from "../CitySearch/CitySearch";
+import Search from "../Search/Search";
+
 function App() {
   return (
     <div className="app">
@@ -16,6 +19,10 @@ function App() {
             <i className="bi bi-caret-down-fill icon units-icon"></i>
           </Button>
         </Header>
+        <CitySearch>
+          <h1>How's the sky looking today?</h1>
+          <Search />
+        </CitySearch>
       </Container>
     </div>
   );
