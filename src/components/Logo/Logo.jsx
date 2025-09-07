@@ -1,9 +1,8 @@
-import dpLogo from "../../assets/images/dp-logo.png";
+import weatherLogo from "../../assets/images/logo.svg";
 export default function Logo() {
-  console.log(dpLogo);
   return (
     <div className="logo">
-      <img src={dpLogo} alt="" style={{ width: "8rem" }} />
+      <img src={weatherLogo} alt="" style={{ width: "8rem" }} />
     </div>
   );
 }
