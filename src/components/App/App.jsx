@@ -25,10 +25,7 @@ function App() {
           <h1>How's the sky looking today?</h1>
           <Search />
         </CitySearch>
-        <Main>
-          <Wraper></Wraper>
-          <Wraper></Wraper>
-        </Main>
+        <Main></Main>
       </Container>
     </div>
   );
