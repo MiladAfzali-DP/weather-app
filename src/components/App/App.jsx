@@ -8,6 +8,7 @@ import CitySearch from "../CitySearch/CitySearch";
 import Search from "../Search/Search";
 import Main from "../Main/Main";
 import WeatherDetails from "../WeatherDetails/WeatherDetails";
+import WeatherForecast from "../WeatherForecast/WeatherForecast";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         </CitySearch>
         <Main>
           <WeatherDetails />
+          <WeatherForecast />
         </Main>
       </Container>
     </div>
