@@ -4,7 +4,7 @@ function Temperature() {
     <div className="temp">
       <div className="temp__left">
         <h4>Berlin, Germany</h4>
-        <p>Tuesday,Aug 5, 2025</p>
+        <p>Tuesday, Aug 5, 2025</p>
       </div>
       <div className="temp__right">
         <h3>20˚</h3>
