@@ -6,6 +6,7 @@ import Button from "../Button/Button";
 import Container from "../Container/Container";
 import CitySearch from "../CitySearch/CitySearch";
 import Search from "../Search/Search";
+import Main from "../Main/Main";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <h1>How's the sky looking today?</h1>
           <Search />
         </CitySearch>
+        <Main></Main>
       </Container>
     </div>
   );
