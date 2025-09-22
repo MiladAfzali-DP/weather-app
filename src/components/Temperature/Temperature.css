@@ -1,0 +1,21 @@
+.temp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url(/src/assets/images/bg-today-large.svg);
+}
+.temp__left {
+}
+.temp__right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row-reverse;
+}
+
+.temp__right h3 {
+  font-size: 4rem;
+}
+.temp__right img {
+  width: 4rem;
+}
