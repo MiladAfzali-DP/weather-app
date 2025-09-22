@@ -7,7 +7,7 @@ import Container from "../Container/Container";
 import CitySearch from "../CitySearch/CitySearch";
 import Search from "../Search/Search";
 import Main from "../Main/Main";
-import Wraper from "../Wraper/Wraper";
+import WeatherDetails from "../WeatherDetails/WeatherDetails";
 
 function App() {
   return (
@@ -25,7 +25,9 @@ function App() {
           <h1>How's the sky looking today?</h1>
           <Search />
         </CitySearch>
-        <Main></Main>
+        <Main>
+          <WeatherDetails />
+        </Main>
       </Container>
     </div>
   );
