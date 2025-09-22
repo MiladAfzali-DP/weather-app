@@ -2,6 +2,7 @@
   outline: 0;
   border: 0;
   background-color: var(--neutral-800);
+  border: 1px solid var(--neutral-700);
   color: white;
   display: flex;
   justify-content: center;
