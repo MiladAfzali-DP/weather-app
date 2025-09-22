@@ -1,0 +1,25 @@
+.wf {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 1.5rem;
+}
+.wf-box {
+  display: flex;
+  justify-content: space-between;
+  align-content: start;
+  flex-direction: column;
+  padding: 0.9rem;
+}
+.wf-box:hover {
+  border-color: var(--neutral-200);
+}
+.wf-box span:nth-of-type(1) {
+  color: var(--neutral-300);
+  font-size: 0.9rem;
+}
+.wf-box span:nth-of-type(2) {
+  color: var(--neutral-200);
+  font-size: 1.5rem;
+}
