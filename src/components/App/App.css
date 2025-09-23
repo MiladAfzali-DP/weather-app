@@ -1,4 +1,4 @@
-.units {
+.btn {
   outline: 0;
   border: 0;
   background-color: var(--neutral-800);
@@ -12,10 +12,4 @@
   border-radius: 0.5rem;
   text-transform: capitalize;
   cursor: pointer;
-}
-.units-icon {
-  transition: all 250ms ease-in 20ms;
-}
-.units:hover .units-icon {
-  transform: rotate(180deg);
 }

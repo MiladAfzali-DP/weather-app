@@ -8,6 +8,10 @@ import CitySearch from "../CitySearch/CitySearch";
 import Search from "../Search/Search";
 import Main from "../Main/Main";
 import WeatherDetails from "../WeatherDetails/WeatherDetails";
+import HourlyForecast from "../HourlyForecast/HourlyForecast";
+import WeatherForecast from "../WeatherForecast/WeatherForecast";
+import Temperature from "../Temperature/Temperature";
+import DailyForecast from "../DailyForecast/DailyForecast";
 
 function App() {
   return (
@@ -15,7 +19,7 @@ function App() {
       <Container>
         <Header>
           <Logo />
-          <Button className="units">
+          <Button className="btn">
             <img src={unitsIcon} alt="" />
             units
             <i className="bi bi-caret-down-fill icon units-icon"></i>
@@ -26,7 +30,12 @@ function App() {
           <Search />
         </CitySearch>
         <Main>
-          <WeatherDetails />
+          <WeatherDetails>
+            <Temperature />
+            <WeatherForecast />
+            <DailyForecast />
+          </WeatherDetails>
+          <HourlyForecast />
         </Main>
       </Container>
     </div>
