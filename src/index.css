@@ -64,5 +64,3 @@ input {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--neutral-600);
 }
-::-webkit-scrollbar-corner {
-}
