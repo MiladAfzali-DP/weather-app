@@ -8,6 +8,7 @@ function WeatherDetails() {
     <div className="weather-details">
       <Temperature />
       <WeatherForecast />
+      <DailyForecast />
     </div>
   );
 }

@@ -1,0 +1,34 @@
+.df {
+  margin-top: 2rem;
+}
+.df-wraper {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+.df-box {
+  width: 100%;
+  height: 8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  padding: 0.8rem 0.5rem;
+}
+.df-box span {
+  display: block;
+}
+.df-box div {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.df-box div span {
+  font-size: 0.8rem;
+}
+.df-box img {
+  width: 3rem;
+}

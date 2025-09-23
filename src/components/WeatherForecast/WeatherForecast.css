@@ -11,6 +11,8 @@
   align-content: start;
   flex-direction: column;
   padding: 0.9rem;
+  width: 100%;
+  height: 5.5rem;
 }
 .wf-box:hover {
   border-color: var(--neutral-200);

@@ -9,8 +9,8 @@ function WeatherForecast() {
   ];
   return (
     <div className="wf">
-      {wfDatas.map((wfData) => (
-        <Box className="wf-box">
+      {wfDatas.map((wfData, i) => (
+        <Box className="wf-box" key={i}>
           <span>{wfData[0]}</span>
           <span>{wfData[1]}</span>
         </Box>
