@@ -1,0 +1,25 @@
+.search-results {
+  position: absolute;
+  top: 3.2rem;
+  left: 0;
+  right: 0;
+  background-color: var(--neutral-800);
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.search-results p {
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--neutral-200);
+  margin: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--neutral-800);
+  cursor: pointer;
+  transition: all 250ms ease-in 20ms;
+}
+
+.search-results p:hover,
+.select {
+  background-color: var(--neutral-700);
+  border-color: var(--neutral-600);
+}

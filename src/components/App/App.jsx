@@ -12,8 +12,15 @@ import HourlyForecast from "../HourlyForecast/HourlyForecast";
 import WeatherForecast from "../WeatherForecast/WeatherForecast";
 import Temperature from "../Temperature/Temperature";
 import DailyForecast from "../DailyForecast/DailyForecast";
+import { useState } from "react";
 
 function App() {
+  //* State Hook
+  const [locationCity, setLocationCity] = useState({ lat: 0, lon: 0 });
+
+  //* Handle Function
+  const handleGetLocationCity = (location) => setLocationCity(location);
+  console.log(locationCity);
   return (
     <div className="app">
       <Container>
@@ -27,7 +34,7 @@ function App() {
         </Header>
         <CitySearch>
           <h1>How's the sky looking today?</h1>
-          <Search />
+          <Search onGetLocationCity={handleGetLocationCity} />
         </CitySearch>
         <Main>
           <WeatherDetails>
