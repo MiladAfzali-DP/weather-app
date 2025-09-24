@@ -20,12 +20,11 @@
   gap: 0.5rem;
   border-radius: 0.5rem;
   position: relative;
-  overflow: hidden;
 }
 .input input {
   background-color: inherit;
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
 }
 
 .input input::placeholder {

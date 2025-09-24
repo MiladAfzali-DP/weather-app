@@ -12,15 +12,35 @@ import HourlyForecast from "../HourlyForecast/HourlyForecast";
 import WeatherForecast from "../WeatherForecast/WeatherForecast";
 import Temperature from "../Temperature/Temperature";
 import DailyForecast from "../DailyForecast/DailyForecast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   //* State Hook
-  const [locationCity, setLocationCity] = useState({ lat: 0, lon: 0 });
+  const [locationCity, setLocationCity] = useState(null);
 
   //* Handle Function
   const handleGetLocationCity = (location) => setLocationCity(location);
-  console.log(locationCity);
+
+  //* Effect Hook
+  useEffect(
+    function () {
+      if (!locationCity) return;
+      async function getCityData() {
+        try {
+          const res = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${locationCity.lat}&longitude=${locationCity.lon}&current_weather=true`
+          );
+          if (!res.ok) throw new Error(`Check your Internet: ${res.message}`);
+          const data = await res.json();
+          console.log(data);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      getCityData();
+    },
+    [locationCity]
+  );
   return (
     <div className="app">
       <Container>
