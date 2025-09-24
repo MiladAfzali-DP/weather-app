@@ -52,7 +52,7 @@ export default function Search({ onGetLocationCity }) {
         <img src={searchIcon} />
         <input
           type="text"
-          placeholder="Search for a city..."
+          placeholder="Search and select a city..."
           value={city}
           onChange={handleSearch}
         />
