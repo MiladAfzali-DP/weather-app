@@ -34,6 +34,7 @@ export default function Search({ onGetLocationCity }) {
           if (!res.ok) throw new Error(`Check your Internet: ${res.message}`);
 
           const data = await res.json();
+          console.log(data);
           if (!data.results) throw new Error("We cannot found city");
           handleGetResults(data.results);
         } catch (err) {

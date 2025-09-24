@@ -20,7 +20,7 @@
   gap: 0.5rem;
   border-radius: 0.5rem;
   position: relative;
-  outline: 1px solid var(--Blue-700);
+  overflow: hidden;
 }
 .input input {
   background-color: inherit;
