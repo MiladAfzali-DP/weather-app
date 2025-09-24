@@ -32,11 +32,12 @@ function HourlyForecast() {
         </Button>
       </div>
       <ul className="hf__list">
-        {hfDatas.map((hfData) => (
+        {hfDatas.map((hfData, i) => (
           <HourlyForecastItem
             icon={hfData.icon}
             time={hfData.time}
             temp={hfData.temp}
+            key={i}
           />
         ))}
       </ul>
