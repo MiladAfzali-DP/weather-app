@@ -1,17 +1,26 @@
 import "./SearchResults.css";
-function SearchResults({ resutls, onSelectCityId, selectCityId }) {
-  if (!resutls) return;
+function SearchResults({
+  resutls,
+  onSelectCityId,
+  selectCityId,
+  isLoading,
+  city,
+}) {
+  // if (!resutls) return;
   return (
     <div className="search-results">
-      {resutls.map((result, i) => (
-        <p
-          key={i}
-          onClick={() => onSelectCityId(i)}
-          className={i === selectCityId ? "select" : ""}
-        >
-          {result.name} ({result.country})
-        </p>
-      ))}
+      {city && isLoading && <p className="loading">Search in progress...</p>}
+      {!isLoading &&
+        resutls &&
+        resutls.map((result, i) => (
+          <p
+            key={i}
+            onClick={() => onSelectCityId(i)}
+            className={i === selectCityId ? "select" : ""}
+          >
+            {result.name} ({result.country})
+          </p>
+        ))}
     </div>
   );
 }

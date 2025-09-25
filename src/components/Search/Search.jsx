@@ -8,9 +8,13 @@ export default function Search({ onGetLocationCity }) {
   const [city, setCity] = useState("");
   const [results, setResults] = useState(null);
   const [selectCityId, setSelectCityId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   //* Handle Func
-  const handleSearch = (e) => setCity(e.target.value);
+  const handleSearch = (e) => {
+    setCity(e.target.value);
+    setResults(null);
+  };
   const handleGetResults = (res) => setResults(res);
   const handleSelectCityId = (selectId) => setSelectCityId(selectId);
   const resetSearch = () => {
@@ -22,6 +26,7 @@ export default function Search({ onGetLocationCity }) {
   //* Effect Hook
   useEffect(
     function () {
+      setIsLoading(true);
       if (!city) return;
       const controller = new AbortController();
       const signal = controller.signal;
@@ -33,11 +38,17 @@ export default function Search({ onGetLocationCity }) {
           );
           if (!res.ok) throw new Error(`Check your Internet: ${res.message}`);
 
-          const data = await res.json();
-          if (!data.results) throw new Error("We cannot found city");
-          handleGetResults(data.results);
+          if (!signal.aborted) {
+            const data = await res.json();
+            if (!data.results) throw new Error("We cannot found city");
+            handleGetResults(data.results);
+          } else throw new Error(`HTTP error! Status: ${res.status}`);
         } catch (err) {
-          console.log(err);
+          if (err.name !== "AbortError") {
+            console.error("❌ خطا:", err);
+          }
+        } finally {
+          setIsLoading(false);
         }
       }
       getLocation();
@@ -45,7 +56,7 @@ export default function Search({ onGetLocationCity }) {
     },
     [city]
   );
-
+  console.log(isLoading);
   return (
     <div className="search">
       <div className="input">
@@ -57,9 +68,11 @@ export default function Search({ onGetLocationCity }) {
           onChange={handleSearch}
         />
         <SearchResults
-          resutls={city && results}
+          resutls={results}
           onSelectCityId={handleSelectCityId}
           selectCityId={selectCityId}
+          isLoading={isLoading}
+          city={city}
         />
       </div>
       <button

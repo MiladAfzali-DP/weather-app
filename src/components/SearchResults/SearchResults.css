@@ -21,5 +21,13 @@
 .search-results p:hover,
 .select {
   background-color: var(--neutral-700);
-  border-color: var(--neutral-600);
+  border-color: var(--neutral-700);
+}
+.loading {
+  font-size: 0.7rem !important;
+  cursor: default !important;
+}
+.loading:hover {
+  background-color: var(--neutral-800) !important;
+  border-color: var(--neutral-800) !important;
 }
