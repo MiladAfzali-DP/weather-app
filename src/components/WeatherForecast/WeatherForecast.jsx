@@ -1,11 +1,31 @@
 import "./WeatherForecast.css";
 import Box from "../Box/Box";
-function WeatherForecast() {
+function WeatherForecast({ isTempLoading, tempData }) {
   const wfDatas = [
-    ["Feels Like", "18˚"],
-    ["Humidity", "46%"],
-    ["Wind", "14 km/h"],
-    ["Precipitation", "0 mm"],
+    [
+      "Feels Like",
+      isTempLoading || !tempData
+        ? "-"
+        : `${tempData[1].feelsLike}${tempData[1].unit}`,
+    ],
+    [
+      "Humidity",
+      isTempLoading || !tempData
+        ? "-"
+        : `${tempData[4].humidity}${tempData[4].unit}`,
+    ],
+    [
+      "Wind",
+      isTempLoading || !tempData
+        ? "-"
+        : `${tempData[2].wind} ${tempData[2].unit}`,
+    ],
+    [
+      "Precipitation",
+      isTempLoading || !tempData
+        ? "-"
+        : `${tempData[3].precipitation} ${tempData[3].unit}`,
+    ],
   ];
   return (
     <div className="wf">

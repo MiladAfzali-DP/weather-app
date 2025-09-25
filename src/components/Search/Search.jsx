@@ -7,7 +7,7 @@ export default function Search({ onGetLocationCity }) {
   //* State Hook
   const [city, setCity] = useState("");
   const [results, setResults] = useState(null);
-  const [selectCityId, setSelectCityId] = useState(null);
+  const [selectCityId, setSelectCityId] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   //* Handle Func
@@ -16,10 +16,13 @@ export default function Search({ onGetLocationCity }) {
     setResults(null);
   };
   const handleGetResults = (res) => setResults(res);
-  const handleSelectCityId = (selectId) => setSelectCityId(selectId);
+  const handleSelectCityId = (selectId) => {
+    setSelectCityId(selectId);
+    setCity(results[selectId].name);
+  };
   const resetSearch = () => {
     setCity("");
-    setSelectCityId(null);
+    setSelectCityId(0);
     setResults(null);
   };
 
@@ -38,11 +41,11 @@ export default function Search({ onGetLocationCity }) {
           );
           if (!res.ok) throw new Error(`Check your Internet: ${res.message}`);
 
-          if (!signal.aborted) {
-            const data = await res.json();
+          const data = await res.json();
+          setTimeout(function () {
             if (!data.results) throw new Error("We cannot found city");
-            handleGetResults(data.results);
-          } else throw new Error(`HTTP error! Status: ${res.status}`);
+          }, 1000);
+          handleGetResults(data.results);
         } catch (err) {
           if (err.name !== "AbortError") {
             console.error("❌ خطا:", err);
@@ -56,7 +59,6 @@ export default function Search({ onGetLocationCity }) {
     },
     [city]
   );
-  console.log(isLoading);
   return (
     <div className="search">
       <div className="input">
@@ -77,11 +79,13 @@ export default function Search({ onGetLocationCity }) {
       </div>
       <button
         onClick={() => {
+          if (!selectCityId && selectCityId !== 0) return;
           const selectCity = results[selectCityId];
-          if (!selectCity) return;
           onGetLocationCity({
             lat: selectCity.latitude,
             lon: selectCity.longitude,
+            city: selectCity.name,
+            country: selectCity.country,
           });
           resetSearch();
         }}
