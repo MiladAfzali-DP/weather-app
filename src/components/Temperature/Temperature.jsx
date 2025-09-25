@@ -35,11 +35,11 @@ function Temperature({ isTempLoading, tempData }) {
     [99, "icon-storm.webp"],
   ]);
   return (
-    <div className={isTempLoading || !tempData ? "loading" : "temp"}>
+    <div className={isTempLoading || !tempData ? "loading-temp" : "temp"}>
       {!isTempLoading && !tempData && <h2>Please Search a City</h2>}
       {isTempLoading && (
         <>
-          <div className="loading-dot">
+          <div className="loading-temp-dot">
             <span></span>
             <span></span>
             <span></span>

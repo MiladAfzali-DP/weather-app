@@ -5,10 +5,10 @@ import SearchResults from "../SearchResults/SearchResults";
 
 export default function Search({ onGetLocationCity }) {
   //* State Hook
-  const [city, setCity] = useState("");
+  const [city, setCity] = useState("s");
   const [results, setResults] = useState(null);
   const [selectCityId, setSelectCityId] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   //* Handle Func
   const handleSearch = (e) => {
@@ -46,12 +46,11 @@ export default function Search({ onGetLocationCity }) {
             if (!data.results) throw new Error("We cannot found city");
           }, 1000);
           handleGetResults(data.results);
+          setIsLoading(false);
         } catch (err) {
           if (err.name !== "AbortError") {
             console.error("❌ خطا:", err);
           }
-        } finally {
-          setIsLoading(false);
         }
       }
       getLocation();
