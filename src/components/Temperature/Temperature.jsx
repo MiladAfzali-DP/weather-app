@@ -1,15 +1,15 @@
 import "./Temperature.css";
 function Temperature({ isTempLoading, tempData }) {
-  const todayDate = new Date();
+  const now = new Date();
   const dataTime = {
     dayStr: new Intl.DateTimeFormat("us-en", { weekday: "long" }).format(
-      todayDate.getDay()
+      now.getDay()
     ),
-    dayNum: todayDate.getDay(),
+    dayNum: now.getDay(),
     month: new Intl.DateTimeFormat("us-en", { month: "short" }).format(
-      todayDate.getMonth()
+      now.getMonth()
     ),
-    year: todayDate.getFullYear(),
+    year: now.getFullYear(),
   };
   const dataImage = new Map([
     [0, "icon-sunny.webp"],
@@ -36,7 +36,10 @@ function Temperature({ isTempLoading, tempData }) {
   ]);
   return (
     <div className={isTempLoading || !tempData ? "loading-temp" : "temp"}>
+      {/* Handle when Don't have any search */}
       {!isTempLoading && !tempData && <h2>Please Search a City</h2>}
+
+      {/* Handle Loading */}
       {isTempLoading && (
         <>
           <div className="loading-temp-dot">
@@ -47,6 +50,8 @@ function Temperature({ isTempLoading, tempData }) {
           <p>Loading...</p>
         </>
       )}
+
+      {/* Show Temp */}
       {!isTempLoading && tempData && (
         <>
           <div className="temp__left">
