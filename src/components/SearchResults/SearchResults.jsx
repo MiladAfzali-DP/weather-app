@@ -3,20 +3,30 @@ function SearchResults({
   resutls,
   onSelectCityId,
   selectCityId,
-  isLoading,
+  isSearchLoading,
   isSearchError,
   city,
 }) {
-  console.log(isSearchError);
   return (
     <div className="search-results">
+      {/* Handle Error */}
       {city && isSearchError && (
-        <p className="loading-error">{isSearchError}</p>
+        <p className="loading-error">
+          <img src="/src/assets/images/icon-error.svg" alt="" />
+          <span>{isSearchError}</span>
+        </p>
       )}
-      {city && !isSearchError && isLoading && (
-        <p className="loading-error">Search in progress...</p>
+
+      {/* Handle Loading */}
+      {city && !isSearchError && isSearchLoading && (
+        <p className="loading-error">
+          <img src="/src/assets/images/icon-loading.svg" alt="" />
+          <span>Search in progress...</span>
+        </p>
       )}
-      {!isLoading &&
+
+      {/* Show Results */}
+      {!isSearchLoading &&
         !isSearchError &&
         resutls &&
         resutls.map((result, i) => (

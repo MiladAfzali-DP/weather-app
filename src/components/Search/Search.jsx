@@ -5,10 +5,10 @@ import SearchResults from "../SearchResults/SearchResults";
 
 export default function Search({ onGetLocationCity }) {
   //* State Hook
-  const [city, setCity] = useState("");
+  const [city, setCity] = useState("s");
   const [results, setResults] = useState(null);
   const [selectCityId, setSelectCityId] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSearchLoading, setIsSearchLoading] = useState(false);
   const [isSearchError, setIsSearchError] = useState("");
 
   //* Handle Func
@@ -30,10 +30,14 @@ export default function Search({ onGetLocationCity }) {
   //* Effect Hook
   useEffect(
     function () {
-      setIsLoading(true);
+      setIsSearchLoading(true);
       if (!city) return;
+
+      //? Abort Var
       const controller = new AbortController();
       const signal = controller.signal;
+
+      //? Async Function For fetch Data
       async function getLocation() {
         try {
           const res = await fetch(
@@ -45,7 +49,7 @@ export default function Search({ onGetLocationCity }) {
           const data = await res.json();
           if (!data.results) throw new Error("We cannot found city");
           handleGetResults(data.results);
-          setIsLoading(false);
+          setIsSearchLoading(false);
           setIsSearchError("");
         } catch (err) {
           if (err.name !== "AbortError") {
@@ -60,6 +64,7 @@ export default function Search({ onGetLocationCity }) {
   );
   return (
     <div className="search">
+      {/* Search Box */}
       <div className="input">
         <img src={searchIcon} />
         <input
@@ -72,15 +77,19 @@ export default function Search({ onGetLocationCity }) {
           resutls={results}
           onSelectCityId={handleSelectCityId}
           selectCityId={selectCityId}
-          isLoading={isLoading}
+          isSearchLoading={isSearchLoading}
           isSearchError={isSearchError}
           city={city}
         />
       </div>
+
+      {/* Search Button */}
       <button
         onClick={() => {
           if (!selectCityId && selectCityId !== 0) return;
           const selectCity = results[selectCityId];
+
+          // Send City Data for Weather
           onGetLocationCity({
             lat: selectCity.latitude,
             lon: selectCity.longitude,

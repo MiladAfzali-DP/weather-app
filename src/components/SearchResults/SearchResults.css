@@ -31,3 +31,15 @@
   background-color: var(--neutral-800) !important;
   border-color: var(--neutral-800) !important;
 }
+.loading-error {
+  display: flex !important;
+  justify-content: start !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+.loading-error p span {
+  display: block !important;
+}
+.loading-error img {
+  width: 1rem;
+}
