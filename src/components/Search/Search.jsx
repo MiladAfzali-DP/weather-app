@@ -5,7 +5,7 @@ import SearchResults from "../SearchResults/SearchResults";
 
 export default function Search({ onGetLocationCity }) {
   //* State Hook
-  const [city, setCity] = useState("s");
+  const [city, setCity] = useState("");
   const [results, setResults] = useState(null);
   const [selectCityId, setSelectCityId] = useState(0);
   const [isSearchLoading, setIsSearchLoading] = useState(false);
@@ -92,7 +92,7 @@ export default function Search({ onGetLocationCity }) {
           // Send City Data for Weather
           onGetLocationCity({
             lat: selectCity.latitude,
-            lon: selectCity.longitude,
+            lng: selectCity.longitude,
             city: selectCity.name,
             country: selectCity.country,
           });

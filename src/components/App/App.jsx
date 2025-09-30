@@ -13,13 +13,18 @@ import WeatherForecast from "../WeatherForecast/WeatherForecast";
 import Temperature from "../Temperature/Temperature";
 import DailyForecast from "../DailyForecast/DailyForecast";
 import { useEffect, useState } from "react";
+import useFetchData from "../../hooks/useFetchData";
 
 function App() {
   //* State Hook
-  const [locationCity, setLocationCity] = useState(null);
-  const [isTempLoading, setIsTempLoading] = useState(false);
+  const [locationCity, setLocationCity] = useState({ lat: null, lng: null });
+  // const [isTempLoading, setIsTempLoading] = useState(false);
+  // const [isTempError, setIsTempError] = useState("");
   const [tempData, setTempData] = useState(null);
-
+  const [weatherData, isTempLoading, isTempError] = useFetchData(
+    `https://api.open-meteo.com/v1/forecast?latitude=${locationCity?.lat}&longitude=${locationCity?.lng}&current_weather=true&hourly=apparent_temperature,relativehumidity_2m,precipitation,temperature_2m&windspeed_unit=kmh&timezone=auto`
+  );
+  console.log("test");
   //* Handle Function
   const handleGetLocationCity = (location) => setLocationCity(location);
   const handleGetTempData = (data) => setTempData(data);
@@ -27,50 +32,35 @@ function App() {
   //* Effect Hook
   useEffect(
     function () {
-      if (!locationCity) return;
-      setIsTempLoading(true);
-      async function getCityData() {
-        try {
-          const res = await fetch(
-            `https://api.open-meteo.com/v1/forecast?latitude=${locationCity.lat}&longitude=${locationCity.lon}&current_weather=true&hourly=apparent_temperature,relativehumidity_2m,precipitation,temperature_2m&windspeed_unit=kmh&timezone=auto
-`
-          );
-          if (!res.ok) throw new Error(`Check your Internet: ${res.message}`);
-          const data = await res.json();
-          handleGetTempData([
-            {
-              temp: data.current_weather.temperature,
-              unit: data.current_weather_units.temperature[0],
-            },
-            {
-              feelsLike: data.hourly.apparent_temperature[0],
-              unit: data.hourly_units.apparent_temperature[0],
-            },
-            {
-              wind: data.current_weather.windspeed,
-              unit: data.current_weather_units.windspeed,
-            },
-            {
-              precipitation: data.hourly.precipitation[0],
-              unit: data.hourly_units.precipitation,
-            },
-            {
-              humidity: data.hourly.temperature_2m[0],
-              unit: data.hourly_units.relativehumidity_2m,
-            },
-            { city: locationCity.city, country: locationCity.country },
-            { weathercode: data.current_weather.weathercode },
-          ]);
-        } catch (err) {
-          console.log(err);
-        } finally {
-          setIsTempLoading(false);
-        }
-      }
-      getCityData();
+      weatherData &&
+        handleGetTempData([
+          {
+            temp: weatherData.current_weather.temperature,
+            unit: weatherData.current_weather_units.temperature[0],
+          },
+          {
+            feelsLike: weatherData.hourly.apparent_temperature[0],
+            unit: weatherData.hourly_units.apparent_temperature[0],
+          },
+          {
+            wind: weatherData.current_weather.windspeed,
+            unit: weatherData.current_weather_units.windspeed,
+          },
+          {
+            precipitation: weatherData.hourly.precipitation[0],
+            unit: weatherData.hourly_units.precipitation,
+          },
+          {
+            humidity: weatherData.hourly.temperature_2m[0],
+            unit: weatherData.hourly_units.relativehumidity_2m,
+          },
+          { city: locationCity.city, country: locationCity.country },
+          { weathercode: weatherData.current_weather.weathercode },
+        ]);
     },
-    [locationCity]
+    [weatherData, locationCity]
   );
+
   return (
     <div className="app">
       <Container>
