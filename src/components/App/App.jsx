@@ -17,14 +17,16 @@ import useFetchData from "../../hooks/useFetchData";
 
 function App() {
   //* State Hook
-  const [locationCity, setLocationCity] = useState({ lat: null, lng: null });
+  const [locationCity, setLocationCity] = useState(null);
   // const [isTempLoading, setIsTempLoading] = useState(false);
   // const [isTempError, setIsTempError] = useState("");
   const [tempData, setTempData] = useState(null);
   const [weatherData, isTempLoading, isTempError] = useFetchData(
-    `https://api.open-meteo.com/v1/forecast?latitude=${locationCity?.lat}&longitude=${locationCity?.lng}&current_weather=true&hourly=apparent_temperature,relativehumidity_2m,precipitation,temperature_2m&windspeed_unit=kmh&timezone=auto`
+    `https://api.open-meteo.com/v1/forecast?latitude=${locationCity?.lat}&longitude=${locationCity?.lng}&current_weather=true&hourly=apparent_temperature,relativehumidity_2m,precipitation,temperature_2m&windspeed_unit=kmh&timezone=auto`,
+    null,
+    !locationCity
   );
-  console.log("test");
+  console.log(tempData);
   //* Handle Function
   const handleGetLocationCity = (location) => setLocationCity(location);
   const handleGetTempData = (data) => setTempData(data);

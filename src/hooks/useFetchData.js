@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-function useFetchData(api, handleError, closeFetch = false) {
+function useFetchData(api, handleError, closeFetch = false, option) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [apiData, setApiData] = useState(null);
   useEffect(
     function () {
-      setIsLoading(true);
       if (closeFetch) return;
 
       //? Abort Var
@@ -13,15 +12,20 @@ function useFetchData(api, handleError, closeFetch = false) {
 
       //? Async Function For fetch Data
       async function getData() {
+        setIsLoading(true);
         try {
-          const res = await fetch(api, { signal: controller.signal });
-          if (!res.ok) throw new Error(`Check your Internet: ${res.message}`);
+          const res = await fetch(api, {
+            signal: controller.signal,
+            ...option,
+          });
+          if (!res.ok) throw new Error(`Check your Internet: ${res.status}`);
 
           const data = await res.json();
           const errMessage = handleError?.(data);
           if (errMessage) throw new Error(errMessage);
+
           setApiData(data);
-          setError("");
+          setError(null);
         } catch (err) {
           if (err.name !== "AbortError") {
             setError(err.message);
@@ -33,7 +37,7 @@ function useFetchData(api, handleError, closeFetch = false) {
       getData();
       return () => controller.abort();
     },
-    [api, closeFetch, handleError]
+    [api, closeFetch]
   );
   return [apiData, isLoading, error];
 }
