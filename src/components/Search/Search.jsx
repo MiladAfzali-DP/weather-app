@@ -20,7 +20,7 @@ export default function Search({ onGetLocationCity }) {
     !city
   );
 
-  // console.log(searchResults);
+  console.log("test");
   //* Handle Func
   const handleSearch = (e) => {
     setCity(e.target.value);
