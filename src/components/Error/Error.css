@@ -1,0 +1,41 @@
+.error {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.error__wraper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.error img {
+  width: 2rem;
+}
+.error h2 {
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+}
+.error p {
+  text-align: center;
+  font-size: 0.8rem;
+  width: 19rem;
+  color: var(--neutral-200);
+}
+.error button {
+  background-color: var(--neutral-800);
+  border: 1px solid var(--neutral-700);
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+  font-size: 0.7rem;
+}
+.error button img {
+  width: 0.8rem;
+}
