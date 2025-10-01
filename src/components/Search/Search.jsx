@@ -1,6 +1,6 @@
 import "./Search.css";
 import searchIcon from "../../assets/images/icon-search.svg";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import SearchResults from "../SearchResults/SearchResults";
 import useFetchData from "../../hooks/useFetchData";
 
@@ -9,14 +9,12 @@ export default function Search({ onGetLocationCity }) {
   const [city, setCity] = useState("");
   const [results, setResults] = useState("");
   const [selectCityId, setSelectCityId] = useState(0);
-  // const [isSearchLoading, setIsSearchLoading] = useState(false);
-  // const [isSearchError, setIsSearchError] = useState("");
 
   const [searchResults, isSearchLoading, isSearchError] = useFetchData(
     `https://geocoding-api.open-meteo.com/v1/search?name=${city}`,
-    function (data) {
+    useCallback((data) => {
       if (!data.results) return "We cannot found city";
-    },
+    }, []),
     !city
   );
 
@@ -43,40 +41,6 @@ export default function Search({ onGetLocationCity }) {
     },
     [searchResults]
   );
-  // useEffect(
-  //   function () {
-  //     if (!city) return;
-  //     setIsSearchLoading(true);
-
-  //     //? Abort Var
-  //     const controller = new AbortController();
-  //     const signal = controller.signal;
-
-  //     //? Async Function For fetch Data
-  //     async function getLocation() {
-  //       try {
-  //         const res = await fetch(
-  //           `https://geocoding-api.open-meteo.com/v1/search?name=${city}`,
-  //           { signal }
-  //         );
-  //         if (!res.ok) throw new Error(`Check your Internet: ${res.message}`);
-
-  //         const data = await res.json();
-  //         if (!data.results) throw new Error("We cannot found city");
-  //         handleGetResults(data.results);
-  //         setIsSearchLoading(false);
-  //         setIsSearchError("");
-  //       } catch (err) {
-  //         if (err.name !== "AbortError") {
-  //           setIsSearchError(err.message);
-  //         }
-  //       }
-  //     }
-  //     getLocation();
-  //     return () => controller.abort();
-  //   },
-  //   [city]
-  // );
 
   return (
     <div className="search">

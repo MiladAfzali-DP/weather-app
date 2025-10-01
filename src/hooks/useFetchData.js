@@ -37,7 +37,7 @@ function useFetchData(api, handleError, closeFetch = false, option) {
       getData();
       return () => controller.abort();
     },
-    [api, closeFetch]
+    [api, closeFetch, option, handleError]
   );
   return [apiData, isLoading, error];
 }

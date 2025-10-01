@@ -75,7 +75,11 @@ function App() {
           <h1>How's the sky looking today?</h1>
           <Search onGetLocationCity={handleGetLocationCity} />
         </CitySearch>
-        {tempData ? (
+
+        {/* Handle when Don't have any search */}
+        {!tempData && !isTempLoading ? (
+          <p className="no-results">No search result found!</p>
+        ) : (
           <Main>
             <WeatherDetails>
               <Temperature isTempLoading={isTempLoading} tempData={tempData} />
@@ -87,8 +91,6 @@ function App() {
             </WeatherDetails>
             <HourlyForecast />
           </Main>
-        ) : (
-          <p className="no-results">No search result found!</p>
         )}
       </Container>
     </div>

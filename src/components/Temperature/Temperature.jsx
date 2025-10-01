@@ -36,9 +36,6 @@ function Temperature({ isTempLoading, tempData }) {
   ]);
   return (
     <div className={isTempLoading || !tempData ? "loading-temp" : "temp"}>
-      {/* Handle when Don't have any search */}
-      {!isTempLoading && !tempData && <h2>Please Search a City</h2>}
-
       {/* Handle Loading */}
       {isTempLoading && (
         <>
