@@ -1,28 +1,33 @@
 import "./DailyForecast.css";
 import Box from "../Box/Box";
 import Wraper from "../Wraper/Wraper";
-function DailyForecast({ dfData }) {
-  const dfDatas = [
-    { day: "Tue", icon: "snow", lowestTemp: "14˚", highestTemp: "21˚" },
-    { day: "Wed", icon: "snow", lowestTemp: "14˚", highestTemp: "21˚" },
-    { day: "Thu", icon: "snow", lowestTemp: "14˚", highestTemp: "21˚" },
-    { day: "Fri", icon: "snow", lowestTemp: "14˚", highestTemp: "21˚" },
-    { day: "Sat", icon: "snow", lowestTemp: "14˚", highestTemp: "21˚" },
-    { day: "Sun", icon: "snow", lowestTemp: "14˚", highestTemp: "21˚" },
-    { day: "Mon", icon: "snow", lowestTemp: "14˚", highestTemp: "21˚" },
-  ];
+function DailyForecast({ dfData, dfStatus }) {
+  const dfDatas = [];
+  if (dfStatus === "finish")
+    for (let i = 0; i < 7; i++) {
+      dfDatas.push({
+        day: dfData?.days[i],
+        icon: dfData?.icons[i],
+        lowestTemp: `${Math.floor(dfData?.minTemp[i])}˚`,
+        highestTemp: `${Math.floor(dfData?.maxTemp[i])}˚`,
+      });
+    }
   return (
     <div className="df">
       <h4>Daily Forecast</h4>
       <Wraper className="df-wraper">
         {dfDatas.map((dfData, i) => (
           <Box className="df-box" key={i}>
-            <span>{dfData.day}</span>
-            <img src={`/src/assets/images/icon-${dfData.icon}.webp`} />
-            <div>
-              <span>{dfData.highestTemp}</span>
-              <span>{dfData.lowestTemp}</span>
-            </div>
+            {dfStatus === "finish" && (
+              <>
+                <span>{dfData.day}</span>
+                <img src={`/src/assets/images/${dfData.icon}`} />
+                <div>
+                  <span>{dfData.highestTemp}</span>
+                  <span>{dfData.lowestTemp}</span>
+                </div>
+              </>
+            )}
           </Box>
         ))}
       </Wraper>

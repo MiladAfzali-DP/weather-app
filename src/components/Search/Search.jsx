@@ -49,17 +49,9 @@ export default function Search({ dispatch, city, results, selectCityId }) {
       <button
         onClick={() => {
           if (!selectCityId && selectCityId !== 0) return;
-          const selectCity = results[selectCityId];
-
           // Send City Data for Weather
           dispatch({
             type: "getCityData",
-            payload: {
-              lat: selectCity.latitude,
-              lng: selectCity.longitude,
-              city: selectCity.name,
-              country: selectCity.country,
-            },
           });
           dispatch({ type: "resetSearch" });
         }}

@@ -12,7 +12,7 @@ import HourlyForecast from "../HourlyForecast/HourlyForecast";
 import WeatherForecast from "../WeatherForecast/WeatherForecast";
 import Temperature from "../Temperature/Temperature";
 import DailyForecast from "../DailyForecast/DailyForecast";
-import { useEffect, useReducer } from "react";
+import { useEffect, useMemo, useReducer } from "react";
 import useFetchData from "../../hooks/useFetchData";
 import Error from "../Error/Error";
 
@@ -26,8 +26,18 @@ const initialState = {
 };
 function reducer(state, action) {
   switch (action.type) {
-    case "getCityData":
-      return { ...state, locationCity: action.payload };
+    case "getCityData": {
+      const selectCity = state.results?.[state.selectCityId];
+      return {
+        ...state,
+        locationCity: {
+          lat: selectCity.latitude,
+          lng: selectCity.longitude,
+          city: selectCity.name,
+          country: selectCity.country,
+        },
+      };
+    }
     case "getTempData":
       return { ...state, tempData: action.payload };
     case "retry":
@@ -44,6 +54,8 @@ function reducer(state, action) {
       };
     case "resetSearch":
       return { ...state, city: "", selectCityId: null, results: null };
+    case "setDfData":
+      return { ...state, dfData: action.payload };
     default:
       throw new Error("unknown");
   }
@@ -55,40 +67,42 @@ function App() {
     { locationCity, tempData, city, results, selectCityId, dfData },
     dispatch,
   ] = useReducer(reducer, initialState);
-  const [weatherData, tempStatus, tempErrMessage] = useFetchData(
+  const [weatherData, tempStatus] = useFetchData(
     `https://api.open-meteo.com/v1/forecast?latitude=${locationCity?.lat}&longitude=${locationCity?.lng}&current_weather=true&hourly=apparent_temperature,relativehumidity_2m,precipitation,temperature_2m&windspeed_unit=kmh&timezone=auto`,
     null,
     !locationCity
   );
   const [dailyForecast, dailyForecastStatus, dailyForecastErrMessage] =
     useFetchData(
-      `https://api.open-meteo.com/v1/forecast?latitude=${locationCity?.lat}&longitude=${locationCity?.lng}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto`
+      `https://api.open-meteo.com/v1/forecast?latitude=${locationCity?.lat}&longitude=${locationCity?.lng}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&timezone=auto`
     );
-
-  //* Handle Function
-  const dataImage = new Map([
-    [0, "icon-sunny.webp"],
-    [1, "icon-sunny.webp"],
-    [2, "icon-partly-cloudy.webp"],
-    [3, "icon-overcast.webp"],
-    [45, "icon-fog.webp"],
-    [48, "icon-fog.webp"],
-    [51, "icon-drizzle.webp"],
-    [53, "icon-drizzle.webp"],
-    [55, "icon-drizzle.webp"],
-    [61, "icon-rain.webp"],
-    [63, "icon-rain.webp"],
-    [65, "icon-rain.webp"],
-    [71, "icon-snow.webp"],
-    [73, "icon-snow.webp"],
-    [75, "icon-snow.webp"],
-    [81, "icon-rain.webp"],
-    [83, "icon-rain.webp"],
-    [85, "icon-rain.webp"],
-    [95, "icon-storm.webp"],
-    [96, "icon-storm.webp"],
-    [99, "icon-storm.webp"],
-  ]);
+  const dataImage = useMemo(
+    () =>
+      new Map([
+        [0, "icon-sunny.webp"],
+        [1, "icon-sunny.webp"],
+        [2, "icon-partly-cloudy.webp"],
+        [3, "icon-overcast.webp"],
+        [45, "icon-fog.webp"],
+        [48, "icon-fog.webp"],
+        [51, "icon-drizzle.webp"],
+        [53, "icon-drizzle.webp"],
+        [55, "icon-drizzle.webp"],
+        [61, "icon-rain.webp"],
+        [63, "icon-rain.webp"],
+        [65, "icon-rain.webp"],
+        [71, "icon-snow.webp"],
+        [73, "icon-snow.webp"],
+        [75, "icon-snow.webp"],
+        [81, "icon-rain.webp"],
+        [83, "icon-rain.webp"],
+        [85, "icon-rain.webp"],
+        [95, "icon-storm.webp"],
+        [96, "icon-storm.webp"],
+        [99, "icon-storm.webp"],
+      ]),
+    []
+  );
   //* Effect Hook
   useEffect(
     function () {
@@ -123,22 +137,25 @@ function App() {
     },
     [weatherData, locationCity]
   );
-  // useEffect(
-  //   function () {
-  //     dailyForecast &&
-  //       setDfData({
-  //         days: dailyForecast.daily.time.map((dTime) =>
-  //           new Date(dTime).toDateString().slice(0, 3)
-  //         ),
-  //         icons: dailyForecast.daily.precipitation_sum.map((dps) =>
-  //           dataImage.get(dps)
-  //         ),
-  //         minTemp: dailyForecast.daily.temperature_2m_min,
-  //         maxTemp: dailyForecast.daily.temperature_2m_max,
-  //       });
-  //   },
-  //   [dailyForecast, dataImage]
-  // );
+  useEffect(
+    function () {
+      dailyForecast &&
+        dispatch({
+          type: "setDfData",
+          payload: {
+            days: dailyForecast.daily.time.map((dTime) =>
+              new Date(dTime).toDateString().slice(0, 3)
+            ),
+            icons: dailyForecast.daily.weathercode.map((dps) =>
+              dataImage.get(dps)
+            ),
+            minTemp: dailyForecast.daily.temperature_2m_min,
+            maxTemp: dailyForecast.daily.temperature_2m_max,
+          },
+        });
+    },
+    [dailyForecast, dataImage]
+  );
 
   return (
     <div className="app">
@@ -184,7 +201,11 @@ again in a few moments."
                     tempStatus={tempStatus}
                     tempData={tempData}
                   />
-                  <DailyForecast dfData={dailyForecast} dataImage={dataImage} />
+                  <DailyForecast
+                    dfData={dfData}
+                    dfStatus={dailyForecastStatus}
+                    dataImage={dataImage}
+                  />
                 </WeatherDetails>
                 <HourlyForecast />
               </Main>
