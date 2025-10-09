@@ -1,24 +1,24 @@
 import "./SearchResults.css";
 function SearchResults({
   resutls,
-  onSelectCityId,
   selectCityId,
-  isSearchLoading,
-  isSearchError,
+  searchStatus,
+  searchErrMessage,
   city,
+  dispatch,
 }) {
   return (
     <div className="search-results">
       {/* Handle Error */}
-      {city && isSearchError && (
+      {city && searchStatus === "error" && (
         <p className="loading-error">
           <img src="/src/assets/images/icon-error.svg" alt="" />
-          <span>{isSearchError}</span>
+          <span>{searchErrMessage}</span>
         </p>
       )}
 
       {/* Handle Loading */}
-      {city && !isSearchError && isSearchLoading && (
+      {city && searchStatus === "loading" && (
         <p className="loading-error">
           <img src="/src/assets/images/icon-loading.svg" alt="" />
           <span>Search in progress...</span>
@@ -26,13 +26,12 @@ function SearchResults({
       )}
 
       {/* Show Results */}
-      {!isSearchLoading &&
-        !isSearchError &&
+      {searchStatus === "finish" &&
         resutls &&
         resutls.map((result, i) => (
           <p
             key={i}
-            onClick={() => onSelectCityId(i)}
+            onClick={() => dispatch({ type: "setSelectCityId", payload: i })}
             className={i === selectCityId ? "select" : ""}
           >
             {result.name} ({result.country})

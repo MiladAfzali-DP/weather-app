@@ -1,7 +1,7 @@
 import "./DailyForecast.css";
 import Box from "../Box/Box";
 import Wraper from "../Wraper/Wraper";
-function DailyForecast() {
+function DailyForecast({ dfData }) {
   const dfDatas = [
     { day: "Tue", icon: "snow", lowestTemp: "14˚", highestTemp: "21˚" },
     { day: "Wed", icon: "snow", lowestTemp: "14˚", highestTemp: "21˚" },

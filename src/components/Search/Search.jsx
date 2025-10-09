@@ -1,45 +1,24 @@
 import "./Search.css";
 import searchIcon from "../../assets/images/icon-search.svg";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import SearchResults from "../SearchResults/SearchResults";
 import useFetchData from "../../hooks/useFetchData";
 
-export default function Search({ onGetLocationCity }) {
-  //* State Hook
-  const [city, setCity] = useState("");
-  const [results, setResults] = useState("");
-  const [selectCityId, setSelectCityId] = useState(0);
-
-  const [searchResults, isSearchLoading, isSearchError] = useFetchData(
+export default function Search({ dispatch, city, results, selectCityId }) {
+  const [searchResults, searchStatus, searchErrMessage] = useFetchData(
     `https://geocoding-api.open-meteo.com/v1/search?name=${city}`,
     useCallback((data) => {
       if (!data.results) return "We cannot found city";
     }, []),
     !city
   );
-
-  console.log("test");
-  //* Handle Func
-  const handleSearch = (e) => {
-    setCity(e.target.value);
-    setResults(null);
-  };
-  const handleGetResults = (res) => setResults(res);
-  const handleSelectCityId = (selectId) => {
-    setSelectCityId(selectId);
-    setCity(results[selectId].name);
-  };
-  const resetSearch = () => {
-    setCity("");
-    setSelectCityId(0);
-    setResults(null);
-  };
   //* Effect Hook
   useEffect(
     function () {
-      searchResults && handleGetResults(searchResults.results);
+      searchResults &&
+        dispatch({ type: "setResults", payload: searchResults.results });
     },
-    [searchResults]
+    [searchResults, dispatch]
   );
 
   return (
@@ -51,16 +30,18 @@ export default function Search({ onGetLocationCity }) {
           type="text"
           placeholder="Search and select a city..."
           value={city}
-          onChange={handleSearch}
+          onChange={(e) =>
+            dispatch({ type: "setCity", payload: e.target.value })
+          }
         />
 
         <SearchResults
           resutls={results}
-          onSelectCityId={handleSelectCityId}
           selectCityId={selectCityId}
-          isSearchLoading={isSearchLoading}
-          isSearchError={isSearchError}
+          searchStatus={searchStatus}
+          searchErrMessage={searchErrMessage}
           city={city}
+          dispatch={dispatch}
         />
       </div>
 
@@ -71,13 +52,16 @@ export default function Search({ onGetLocationCity }) {
           const selectCity = results[selectCityId];
 
           // Send City Data for Weather
-          onGetLocationCity({
-            lat: selectCity.latitude,
-            lng: selectCity.longitude,
-            city: selectCity.name,
-            country: selectCity.country,
+          dispatch({
+            type: "getCityData",
+            payload: {
+              lat: selectCity.latitude,
+              lng: selectCity.longitude,
+              city: selectCity.name,
+              country: selectCity.country,
+            },
           });
-          resetSearch();
+          dispatch({ type: "resetSearch" });
         }}
       >
         Search

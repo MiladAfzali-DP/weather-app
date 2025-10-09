@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 function useFetchData(api, handleError, closeFetch = false, option) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [status, setStatus] = useState("readyFetch");
+  const [errMessage, setErrMessage] = useState("");
   const [apiData, setApiData] = useState(null);
   useEffect(
     function () {
@@ -12,8 +12,8 @@ function useFetchData(api, handleError, closeFetch = false, option) {
 
       //? Async Function For fetch Data
       async function getData() {
-        setIsLoading(true);
         try {
+          setStatus("loading");
           const res = await fetch(api, {
             signal: controller.signal,
             ...option,
@@ -25,13 +25,14 @@ function useFetchData(api, handleError, closeFetch = false, option) {
           if (errMessage) throw new Error(errMessage);
 
           setApiData(data);
-          setError(null);
+          setStatus("");
         } catch (err) {
           if (err.name !== "AbortError") {
-            setError(err.message);
+            setStatus("error");
+            setErrMessage(err.message);
           }
         } finally {
-          setIsLoading(false);
+          setStatus("finish");
         }
       }
       getData();
@@ -39,7 +40,6 @@ function useFetchData(api, handleError, closeFetch = false, option) {
     },
     [api, closeFetch, option, handleError]
   );
-  return [apiData, isLoading, error];
+  return [apiData, status, errMessage];
 }
-
 export default useFetchData;
