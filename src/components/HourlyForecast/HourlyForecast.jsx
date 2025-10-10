@@ -1,20 +1,7 @@
 import Button from "../Button/Button";
 import HourlyForecastItem from "../HourlyForecastItem/HourlyForecastItem";
 import "./HourlyForecast.css";
-function HourlyForecast() {
-  const hfDatas = [
-    { icon: "rain", time: "5 pm", temp: "69˚" },
-    { icon: "rain", time: "5 pm", temp: "69˚" },
-    { icon: "rain", time: "5 pm", temp: "69˚" },
-    { icon: "rain", time: "5 pm", temp: "69˚" },
-    { icon: "rain", time: "5 pm", temp: "69˚" },
-    { icon: "rain", time: "5 pm", temp: "69˚" },
-    { icon: "rain", time: "5 pm", temp: "69˚" },
-    { icon: "rain", time: "5 pm", temp: "69˚" },
-    { icon: "rain", time: "5 pm", temp: "69˚" },
-    { icon: "rain", time: "5 pm", temp: "69˚" },
-    { icon: "rain", time: "5 pm", temp: "69˚" },
-  ];
+function HourlyForecast({ hfData }) {
   return (
     <div className="hf">
       <div className="hf__title">
@@ -25,6 +12,7 @@ function HourlyForecast() {
             backgroundColor: "var(--neutral-600)",
             width: "6rem",
             height: "2rem",
+            fontSize: "0.8rem",
           }}
         >
           Tuesday
@@ -32,14 +20,16 @@ function HourlyForecast() {
         </Button>
       </div>
       <ul className="hf__list">
-        {hfDatas.map((hfData, i) => (
-          <HourlyForecastItem
-            icon={hfData.icon}
-            time={hfData.time}
-            temp={hfData.temp}
-            key={i}
-          />
-        ))}
+        {hfData &&
+          Object.entries(hfData)?.[0][1].map((data, i) => (
+            <HourlyForecastItem
+              icon={data.icon}
+              time={data.time}
+              temp={data.temp}
+              unit={data.unit}
+              key={i}
+            />
+          ))}
       </ul>
     </div>
   );

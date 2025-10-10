@@ -3,8 +3,8 @@
   max-height: 522px;
   background-color: var(--neutral-800);
   border-radius: 0.5rem;
-  padding: 1.5rem;
-  overflow-y: scroll;
+  padding: 2rem 1.5rem;
+  overflow: hidden;
 }
 .hf__title {
   display: flex;
@@ -14,11 +14,14 @@
 }
 .hf__list {
   list-style-type: none;
-  padding: 0;
+  padding-left: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
 }
 .hf__list li {
   width: 100%;
-  height: 2.8rem;
+  height: 2.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -26,7 +29,7 @@
   border: 1px solid var(--neutral-600);
   border-radius: 0.3rem;
   padding: 0 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
 }
 .hf__list div {
   display: flex;

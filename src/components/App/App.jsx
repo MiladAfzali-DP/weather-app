@@ -23,6 +23,7 @@ const initialState = {
   selectCityId: null,
   tempData: null,
   dfData: null,
+  hfData: null,
 };
 function reducer(state, action) {
   switch (action.type) {
@@ -38,7 +39,24 @@ function reducer(state, action) {
         },
       };
     }
-    case "getTempData":
+    case "getTempData": {
+      const hourlyData = action.payload?.hourly;
+      const groupedByDay = {};
+
+      hourlyData.time.forEach((timestamp, index) => {
+        const date = timestamp.split("T")[0]; // فقط بخش روز مثل "2025-10-10"
+
+        if (!groupedByDay[date]) groupedByDay[date] = [];
+
+        groupedByDay[date].push({
+          time: timestamp.split("T")[1], // ساعت مثل "03:00"
+          temp: Math.floor(hourlyData.temperature_2m[index]),
+          unit: action.payload.hourly_units.temperature_2m[0],
+          icon: action.dataImage.get(hourlyData.weathercode[0]),
+        });
+      });
+
+      // console.log(groupedByDay);
       return {
         ...state,
         tempData: [
@@ -84,7 +102,9 @@ function reducer(state, action) {
             unit: action.payload.daily_units.temperature_2m_max,
           },
         },
+        hfData: groupedByDay,
       };
+    }
     case "retry":
       return { ...state, locationCity: state.locationCity };
     case "setCity":
@@ -109,11 +129,11 @@ function App() {
   //* State Hook
 
   const [
-    { locationCity, tempData, city, results, selectCityId, dfData },
+    { locationCity, tempData, dfData, hfData, city, results, selectCityId },
     dispatch,
   ] = useReducer(reducer, initialState);
   const [weatherData, tempStatus] = useFetchData(
-    `https://api.open-meteo.com/v1/forecast?latitude=${locationCity?.lat}&longitude=${locationCity?.lng}&current_weather=true&hourly=apparent_temperature,relativehumidity_2m,precipitation,temperature_2m&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&windspeed_unit=kmh&timezone=auto`,
+    `https://api.open-meteo.com/v1/forecast?latitude=${locationCity?.lat}&longitude=${locationCity?.lng}&current_weather=true&hourly=apparent_temperature,relativehumidity_2m,precipitation,temperature_2m,weathercode&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&windspeed_unit=kmh&timezone=auto`,
     null,
     !locationCity
   );
@@ -156,7 +176,7 @@ function App() {
     },
     [weatherData, dataImage]
   );
-
+  console.log(weatherData);
   return (
     <div className="app">
       <Container>
@@ -207,7 +227,7 @@ again in a few moments."
                     dataImage={dataImage}
                   />
                 </WeatherDetails>
-                <HourlyForecast />
+                <HourlyForecast hfData={hfData} />
               </Main>
             )}
           </>
