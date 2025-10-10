@@ -1,15 +1,11 @@
 import "./Temperature.css";
 function Temperature({ tempStatus, tempData, dataImage }) {
-  const now = new Date();
+  const data = new Date().toDateString().split(" ");
   const dataTime = {
-    dayStr: new Intl.DateTimeFormat("us-en", { weekday: "long" }).format(
-      now.getDay()
-    ),
-    dayNum: now.getDay(),
-    month: new Intl.DateTimeFormat("us-en", { month: "short" }).format(
-      now.getMonth()
-    ),
-    year: now.getFullYear(),
+    dayStr: data[0],
+    dayNum: data[1],
+    month: data[2],
+    year: data[3],
   };
 
   return (

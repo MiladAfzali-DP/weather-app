@@ -1,4 +1,5 @@
 import "./App.css";
+import { useEffect, useMemo, useReducer } from "react";
 import unitsIcon from "../../assets/images/icon-units.svg";
 import Header from "../Header/Header";
 import Logo from "../Logo/Logo";
@@ -12,7 +13,6 @@ import HourlyForecast from "../HourlyForecast/HourlyForecast";
 import WeatherForecast from "../WeatherForecast/WeatherForecast";
 import Temperature from "../Temperature/Temperature";
 import DailyForecast from "../DailyForecast/DailyForecast";
-import { useEffect, useMemo, useReducer } from "react";
 import useFetchData from "../../hooks/useFetchData";
 import Error from "../Error/Error";
 
@@ -39,7 +39,46 @@ function reducer(state, action) {
       };
     }
     case "getTempData":
-      return { ...state, tempData: action.payload };
+      return {
+        ...state,
+        tempData: [
+          {
+            temp: action.payload.current_weather.temperature,
+            unit: action.payload.current_weather_units.temperature[0],
+          },
+          {
+            feelsLike: action.payload.hourly.apparent_temperature[0],
+            unit: action.payload.hourly_units.apparent_temperature[0],
+          },
+          {
+            wind: action.payload.current_weather.windspeed,
+            unit: action.payload.current_weather_units.windspeed,
+          },
+          {
+            precipitation: action.payload.hourly.precipitation[0],
+            unit: action.payload.hourly_units.precipitation,
+          },
+          {
+            humidity: action.payload.hourly.temperature_2m[0],
+            unit: action.payload.hourly_units.relativehumidity_2m,
+          },
+          {
+            city: state.locationCity.city,
+            country: state.locationCity.country,
+          },
+          { weathercode: action.payload.current_weather.weathercode },
+        ],
+        dfData: {
+          days: action.payload.daily.time.map((dTime) =>
+            new Date(dTime).toDateString().slice(0, 3)
+          ),
+          icons: action.payload.daily.weathercode.map((dps) =>
+            action.dataImage.get(dps)
+          ),
+          minTemp: action.payload.daily.temperature_2m_min,
+          maxTemp: action.payload.daily.temperature_2m_max,
+        },
+      };
     case "retry":
       return { ...state, locationCity: state.locationCity };
     case "setCity":
@@ -68,14 +107,11 @@ function App() {
     dispatch,
   ] = useReducer(reducer, initialState);
   const [weatherData, tempStatus] = useFetchData(
-    `https://api.open-meteo.com/v1/forecast?latitude=${locationCity?.lat}&longitude=${locationCity?.lng}&current_weather=true&hourly=apparent_temperature,relativehumidity_2m,precipitation,temperature_2m&windspeed_unit=kmh&timezone=auto`,
+    `https://api.open-meteo.com/v1/forecast?latitude=${locationCity?.lat}&longitude=${locationCity?.lng}&current_weather=true&hourly=apparent_temperature,relativehumidity_2m,precipitation,temperature_2m&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&windspeed_unit=kmh&timezone=auto`,
     null,
     !locationCity
   );
-  const [dailyForecast, dailyForecastStatus, dailyForecastErrMessage] =
-    useFetchData(
-      `https://api.open-meteo.com/v1/forecast?latitude=${locationCity?.lat}&longitude=${locationCity?.lng}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&timezone=auto`
-    );
+  console.log(weatherData);
   const dataImage = useMemo(
     () =>
       new Map([
@@ -109,52 +145,11 @@ function App() {
       weatherData &&
         dispatch({
           type: "getTempData",
-          payload: [
-            {
-              temp: weatherData.current_weather.temperature,
-              unit: weatherData.current_weather_units.temperature[0],
-            },
-            {
-              feelsLike: weatherData.hourly.apparent_temperature[0],
-              unit: weatherData.hourly_units.apparent_temperature[0],
-            },
-            {
-              wind: weatherData.current_weather.windspeed,
-              unit: weatherData.current_weather_units.windspeed,
-            },
-            {
-              precipitation: weatherData.hourly.precipitation[0],
-              unit: weatherData.hourly_units.precipitation,
-            },
-            {
-              humidity: weatherData.hourly.temperature_2m[0],
-              unit: weatherData.hourly_units.relativehumidity_2m,
-            },
-            { city: locationCity.city, country: locationCity.country },
-            { weathercode: weatherData.current_weather.weathercode },
-          ],
+          payload: weatherData,
+          dataImage: dataImage,
         });
     },
-    [weatherData, locationCity]
-  );
-  useEffect(
-    function () {
-      dailyForecast &&
-        dispatch({
-          type: "setDfData",
-          payload: {
-            days: dailyForecast.daily.time.map((dTime) =>
-              new Date(dTime).toDateString().slice(0, 3)
-            ),
-            icons: dailyForecast.daily.weathercode.map((dps) =>
-              dataImage.get(dps)
-            ),
-            minTemp: dailyForecast.daily.temperature_2m_min,
-            maxTemp: dailyForecast.daily.temperature_2m_max,
-          },
-        });
-    },
-    [dailyForecast, dataImage]
+    [weatherData, dataImage]
   );
 
   return (
@@ -203,7 +198,7 @@ again in a few moments."
                   />
                   <DailyForecast
                     dfData={dfData}
-                    dfStatus={dailyForecastStatus}
+                    tempStatus={tempStatus}
                     dataImage={dataImage}
                   />
                 </WeatherDetails>

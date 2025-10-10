@@ -25,14 +25,12 @@ function useFetchData(api, handleError, closeFetch = false, option) {
           if (errMessage) throw new Error(errMessage);
 
           setApiData(data);
-          setStatus("");
+          setStatus("finish");
         } catch (err) {
           if (err.name !== "AbortError") {
             setStatus("error");
             setErrMessage(err.message);
           }
-        } finally {
-          setStatus("finish");
         }
       }
       getData();
