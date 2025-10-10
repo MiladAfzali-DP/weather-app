@@ -75,8 +75,14 @@ function reducer(state, action) {
           icons: action.payload.daily.weathercode.map((dps) =>
             action.dataImage.get(dps)
           ),
-          minTemp: action.payload.daily.temperature_2m_min,
-          maxTemp: action.payload.daily.temperature_2m_max,
+          minTemp: {
+            temp: action.payload.daily.temperature_2m_min,
+            unit: action.payload.daily_units.temperature_2m_min,
+          },
+          maxTemp: {
+            temp: action.payload.daily.temperature_2m_max,
+            unit: action.payload.daily_units.temperature_2m_max,
+          },
         },
       };
     case "retry":
@@ -111,7 +117,6 @@ function App() {
     null,
     !locationCity
   );
-  console.log(weatherData);
   const dataImage = useMemo(
     () =>
       new Map([
