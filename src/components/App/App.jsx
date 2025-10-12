@@ -56,7 +56,6 @@ function reducer(state, action) {
         });
       });
 
-      // console.log(groupedByDay);
       return {
         ...state,
         tempData: [
@@ -176,7 +175,6 @@ function App() {
     },
     [weatherData, dataImage]
   );
-  console.log(weatherData);
   return (
     <div className="app">
       <Container>
@@ -227,7 +225,7 @@ again in a few moments."
                     dataImage={dataImage}
                   />
                 </WeatherDetails>
-                <HourlyForecast hfData={hfData} />
+                <HourlyForecast hfData={hfData} tempStatus={tempStatus} />
               </Main>
             )}
           </>
