@@ -22,19 +22,22 @@ function HourlyForecast({ hfData, tempStatus }) {
       </div>
       <ul className="hf__list">
         {hfData &&
-          Object.entries(hfData)?.[0][1].map((data, i) => (
-            <React.Fragment key={i}>
-              {tempStatus === "loading" && <li></li>}
-              {tempStatus === "finish" && hfData && (
+          Object.entries(hfData)?.[0][1].map(
+            (data, i) =>
+              i > 0 && (
                 <HourlyForecastItem
-                  icon={data.icon}
-                  time={data.time}
-                  temp={data.temp}
-                  unit={data.unit}
+                  data={data}
+                  now={i === new Date().getHours()}
+                  tempStatus={tempStatus}
+                  key={i}
                 />
-              )}
-            </React.Fragment>
-          ))}
+              )
+          )}
+        <HourlyForecastItem
+          data={Object.entries(hfData)[0][1][0]}
+          now={0 === new Date().getHours()}
+          tempStatus={tempStatus}
+        />
       </ul>
     </div>
   );
