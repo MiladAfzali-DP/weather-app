@@ -15,6 +15,7 @@ import Temperature from "../Temperature/Temperature";
 import DailyForecast from "../DailyForecast/DailyForecast";
 import useFetchData from "../../hooks/useFetchData";
 import Error from "../Error/Error";
+import { formatDate } from "../../utils/formatDate";
 
 const initialState = {
   locationCity: null,
@@ -24,6 +25,7 @@ const initialState = {
   tempData: null,
   dfData: null,
   hfData: null,
+  weekDays: null,
 };
 function reducer(state, action) {
   switch (action.type) {
@@ -120,6 +122,13 @@ function reducer(state, action) {
       return { ...state, city: "", selectCityId: null, results: null };
     case "setDfData":
       return { ...state, dfData: action.payload };
+    case "getWeekDays":
+      return {
+        ...state,
+        weekDays: action.payload.map((day) =>
+          formatDate(new Date(day[0]), { weekday: "long" })
+        ),
+      };
     default:
       throw new Error("unknown");
   }
@@ -128,7 +137,16 @@ function App() {
   //* State Hook
 
   const [
-    { locationCity, tempData, dfData, hfData, city, results, selectCityId },
+    {
+      locationCity,
+      tempData,
+      dfData,
+      hfData,
+      city,
+      results,
+      selectCityId,
+      weekDays,
+    },
     dispatch,
   ] = useReducer(reducer, initialState);
   const [weatherData, tempStatus] = useFetchData(
@@ -154,6 +172,7 @@ function App() {
         [71, "icon-snow.webp"],
         [73, "icon-snow.webp"],
         [75, "icon-snow.webp"],
+        [80, "icon-rain.webp"],
         [81, "icon-rain.webp"],
         [83, "icon-rain.webp"],
         [85, "icon-rain.webp"],
@@ -225,7 +244,12 @@ again in a few moments."
                     dataImage={dataImage}
                   />
                 </WeatherDetails>
-                <HourlyForecast hfData={hfData} tempStatus={tempStatus} />
+                <HourlyForecast
+                  hfData={hfData}
+                  tempStatus={tempStatus}
+                  dispatch={dispatch}
+                  weekDays={weekDays}
+                />
               </Main>
             )}
           </>

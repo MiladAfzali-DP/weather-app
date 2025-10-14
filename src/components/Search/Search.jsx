@@ -1,8 +1,9 @@
 import "./Search.css";
 import searchIcon from "../../assets/images/icon-search.svg";
 import { useCallback, useEffect } from "react";
-import SearchResults from "../SearchResults/SearchResults";
 import useFetchData from "../../hooks/useFetchData";
+import DropDownList from "../DropDownList/DropDownList";
+import DropDownListItem from "../DropDownListItem/DropDownListItem";
 
 export default function Search({ dispatch, city, results, selectCityId }) {
   const [searchResults, searchStatus, searchErrMessage] = useFetchData(
@@ -35,14 +36,24 @@ export default function Search({ dispatch, city, results, selectCityId }) {
           }
         />
 
-        <SearchResults
-          resutls={results}
-          selectCityId={selectCityId}
-          searchStatus={searchStatus}
-          searchErrMessage={searchErrMessage}
-          city={city}
-          dispatch={dispatch}
-        />
+        <DropDownList
+          status={searchStatus}
+          errMessage={searchErrMessage}
+          data={city}
+        >
+          {results &&
+            results.map((result, i) => (
+              <DropDownListItem
+                key={i}
+                onClick={() =>
+                  dispatch({ type: "setSelectCityId", payload: i })
+                }
+                className={i === selectCityId ? "select" : ""}
+              >
+                {result.name} ({result.country})
+              </DropDownListItem>
+            ))}
+        </DropDownList>
       </div>
 
       {/* Search Button */}
