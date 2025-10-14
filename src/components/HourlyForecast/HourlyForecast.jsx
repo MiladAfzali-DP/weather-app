@@ -20,6 +20,15 @@ function HourlyForecast({ hfData, tempStatus, dispatch, weekDays }) {
 
   useEffect(
     function () {
+      if (!isOpenDropDown) return;
+      const callBack = (e) => e.key === "Escape" && setIsOpenDropDown(false);
+      document.addEventListener("keydown", callBack);
+      return () => document.removeEventListener("keydown", callBack);
+    },
+    [isOpenDropDown]
+  );
+  useEffect(
+    function () {
       if (!hfData) return;
       dispatch({ type: "getWeekDays", payload: Object.entries(hfData) });
     },
