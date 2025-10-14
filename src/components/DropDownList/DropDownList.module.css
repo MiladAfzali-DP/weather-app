@@ -12,7 +12,7 @@
 .dropDownList p:hover,
 .select {
   background-color: var(--neutral-700);
-  border-color: var(--neutral-700);
+  border-color: var(--neutral-600);
 }
 .loadingError {
   font-size: 0.7rem !important;

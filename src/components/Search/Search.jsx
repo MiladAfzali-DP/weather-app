@@ -1,6 +1,6 @@
 import "./Search.css";
 import searchIcon from "../../assets/images/icon-search.svg";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import useFetchData from "../../hooks/useFetchData";
 import DropDownList from "../DropDownList/DropDownList";
 import DropDownListItem from "../DropDownListItem/DropDownListItem";
@@ -13,6 +13,8 @@ export default function Search({ dispatch, city, results, selectCityId }) {
     }, []),
     !city
   );
+
+  const searchBox = useRef();
   //* Effect Hook
   useEffect(
     function () {
@@ -22,12 +24,20 @@ export default function Search({ dispatch, city, results, selectCityId }) {
     [searchResults, dispatch]
   );
 
+  useEffect(function () {
+    searchBox.current.focus();
+    document.addEventListener(
+      "keydown",
+      (e) => e.key === "Enter" && searchBox.current.focus()
+    );
+  }, []);
   return (
     <div className="search">
       {/* Search Box */}
       <div className="input">
         <img src={searchIcon} />
         <input
+          ref={searchBox}
           type="text"
           placeholder="Search and select a city..."
           value={city}

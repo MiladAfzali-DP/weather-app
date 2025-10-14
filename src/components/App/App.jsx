@@ -1,5 +1,10 @@
+// Css Import
 import "./App.css";
+
+// React Hook Import
 import { useEffect, useMemo, useReducer } from "react";
+
+// React Component Import
 import unitsIcon from "../../assets/images/icon-units.svg";
 import Header from "../Header/Header";
 import Logo from "../Logo/Logo";
@@ -15,8 +20,11 @@ import Temperature from "../Temperature/Temperature";
 import DailyForecast from "../DailyForecast/DailyForecast";
 import useFetchData from "../../hooks/useFetchData";
 import Error from "../Error/Error";
+
+// Utils Function Import
 import { formatDate } from "../../utils/formatDate";
 
+// Initial var for default value in reduce function (useReducer)
 const initialState = {
   locationCity: null,
   city: "",
@@ -27,6 +35,8 @@ const initialState = {
   hfData: null,
   weekDays: null,
 };
+
+// Reducer Function (useReducer) (Logic App)
 function reducer(state, action) {
   switch (action.type) {
     case "getCityData": {
@@ -134,8 +144,7 @@ function reducer(state, action) {
   }
 }
 function App() {
-  //* State Hook
-
+  // Hook
   const [
     {
       locationCity,
@@ -149,11 +158,15 @@ function App() {
     },
     dispatch,
   ] = useReducer(reducer, initialState);
+
+  // Get data from api for show weather
   const [weatherData, tempStatus] = useFetchData(
     `https://api.open-meteo.com/v1/forecast?latitude=${locationCity?.lat}&longitude=${locationCity?.lng}&current_weather=true&hourly=apparent_temperature,relativehumidity_2m,precipitation,temperature_2m,weathercode&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&windspeed_unit=kmh&timezone=auto`,
     null,
     !locationCity
   );
+
+  // Data images for show weather with image
   const dataImage = useMemo(
     () =>
       new Map([
@@ -182,7 +195,7 @@ function App() {
       ]),
     []
   );
-  //* Effect Hook
+
   useEffect(
     function () {
       weatherData &&
@@ -197,6 +210,7 @@ function App() {
   return (
     <div className="app">
       <Container>
+        {/* Header App */}
         <Header>
           <Logo />
           <Button className="btn">
@@ -205,6 +219,9 @@ function App() {
             <i className="bi bi-caret-down-fill icon units-icon"></i>
           </Button>
         </Header>
+        {/* Body App */}
+
+        {/* Handle Error */}
         {tempStatus === "error" ? (
           <Error
             errMessage="We couldn't connect to the server (API error). Please try

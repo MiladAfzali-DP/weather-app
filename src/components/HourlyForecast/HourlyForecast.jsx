@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../Button/Button";
 import HourlyForecastItem from "../HourlyForecastItem/HourlyForecastItem";
 import "./HourlyForecast.css";
@@ -39,9 +39,11 @@ function HourlyForecast({ hfData, tempStatus, dispatch, weekDays }) {
           className="btn hf-btn"
           style={{
             backgroundColor: "var(--neutral-600)",
-            width: "6rem",
+            color: "var(--neutral-200)",
+            width: "6.5rem",
             height: "2rem",
             fontSize: "0.8rem",
+            borderColor: "var(--neutral-600)",
           }}
           onClick={handleIsOpenDropDown}
         >
