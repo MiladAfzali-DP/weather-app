@@ -1,8 +1,11 @@
+.dropDownList {
+  z-index: 1000;
+}
 .dropDownList p {
   padding: 0.5rem;
   font-size: 0.9rem;
   color: var(--neutral-200);
-  margin: 0.5rem;
+  margin: 0.25rem 0;
   border-radius: 0.25rem;
   border: 1px solid var(--neutral-800);
   cursor: pointer;

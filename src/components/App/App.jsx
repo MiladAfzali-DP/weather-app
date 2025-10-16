@@ -23,6 +23,9 @@ import Error from "../Error/Error";
 
 // Utils Function Import
 import { formatDate } from "../../utils/formatDate";
+import DropDownList from "../DropDownList/DropDownList";
+import DropDownListItem from "../DropDownListItem/DropDownListItem";
+import DropDownListTitle from "../DropDownListTitle/DropDownListTitle";
 
 // Initial var for default value in reduce function (useReducer)
 const initialState = {
@@ -34,6 +37,9 @@ const initialState = {
   dfData: null,
   hfData: null,
   weekDays: null,
+  isOpenDropDowns: null,
+  imperialMode: false,
+  unit: { tempUnit: "celsius", windSpeadUnit: "kmh", precUnit: "mm" },
 };
 
 // Reducer Function (useReducer) (Logic App)
@@ -67,7 +73,6 @@ function reducer(state, action) {
           icon: action.dataImage.get(hourlyData.weathercode[0]),
         });
       });
-
       return {
         ...state,
         tempData: [
@@ -139,6 +144,55 @@ function reducer(state, action) {
           formatDate(new Date(day[0]), { weekday: "long" })
         ),
       };
+    case "openDropDown":
+      return {
+        ...state,
+        isOpenDropDowns:
+          state.isOpenDropDowns === action.payload ? null : action.payload,
+      };
+    case "switchToImperial": {
+      if (state.imperialMode)
+        return {
+          ...state,
+          imperialMode: !state.imperialMode,
+          unit: { tempUnit: "celsius", windSpeadUnit: "kmh", precUnit: "mm" },
+        };
+      else
+        return {
+          ...state,
+          imperialMode: !state.imperialMode,
+          unit: {
+            tempUnit: "fahrenheit",
+            windSpeadUnit: "mph",
+            precUnit: "inch",
+          },
+        };
+    }
+    case "changeTempUnit":
+      return {
+        ...state,
+        unit: {
+          ...state.unit,
+          tempUnit: action.payload,
+        },
+      };
+
+    case "changeWindSpeadUnit":
+      return {
+        ...state,
+        unit: {
+          ...state.unit,
+          windSpeadUnit: action.payload,
+        },
+      };
+    case "changePrecUnit":
+      return {
+        ...state,
+        unit: {
+          ...state.unit,
+          precUnit: action.payload,
+        },
+      };
     default:
       throw new Error("unknown");
   }
@@ -155,13 +209,15 @@ function App() {
       results,
       selectCityId,
       weekDays,
+      isOpenDropDowns,
+      unit,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
 
   // Get data from api for show weather
   const [weatherData, tempStatus] = useFetchData(
-    `https://api.open-meteo.com/v1/forecast?latitude=${locationCity?.lat}&longitude=${locationCity?.lng}&current_weather=true&hourly=apparent_temperature,relativehumidity_2m,precipitation,temperature_2m,weathercode&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&windspeed_unit=kmh&timezone=auto`,
+    `https://api.open-meteo.com/v1/forecast?latitude=${locationCity?.lat}&longitude=${locationCity?.lng}&current_weather=true&hourly=apparent_temperature,relativehumidity_2m,precipitation,temperature_2m,weathercode&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&wind-speed_unit=kmh&timezone=auto&temperature_unit=${unit.tempUnit}&wind_speed_unit=${unit.windSpeadUnit}&precipitation_unit=${unit.precUnit}`,
     null,
     !locationCity
   );
@@ -195,6 +251,12 @@ function App() {
       ]),
     []
   );
+  const unitsListData = {
+    imperial: "Switch to Imperial",
+    temperature: ["Celsius (°C)", "Fahrenheit (°F)"],
+    windSpeed: ["km/h", "mp/h"],
+    precipitation: ["Millimeters (mm)", "Inches (inch)"],
+  };
 
   useEffect(
     function () {
@@ -213,21 +275,100 @@ function App() {
         {/* Header App */}
         <Header>
           <Logo />
-          <Button className="btn">
+          <Button
+            className="btn"
+            onClick={() => dispatch({ type: "openDropDown", payload: 1 })}
+          >
             <img src={unitsIcon} alt="" />
             units
-            <i className="bi bi-caret-down-fill icon units-icon"></i>
+            <i
+              className={`bi bi-caret-${
+                isOpenDropDowns === 1 ? "up" : "down"
+              }-fill icon units-icon`}
+            ></i>
           </Button>
+          {isOpenDropDowns === 1 && (
+            <DropDownList customStyle={{ left: "none", width: "13rem" }}>
+              <DropDownListItem
+                onClick={() => dispatch({ type: "switchToImperial" })}
+              >
+                {unitsListData.imperial}
+              </DropDownListItem>
+              <DropDownListTitle>Temperature</DropDownListTitle>
+              {unitsListData.temperature.map((tempData, i) => {
+                const formatData = tempData.split(" ")[0].toLocaleLowerCase();
+                return (
+                  <DropDownListItem
+                    className={unit.tempUnit === formatData ? "select" : ""}
+                    onClick={() =>
+                      dispatch({
+                        type: "changeTempUnit",
+                        payload: formatData,
+                      })
+                    }
+                    key={i}
+                  >
+                    {tempData}
+                  </DropDownListItem>
+                );
+              })}
+              <DropDownListTitle>Wind Spead</DropDownListTitle>
+              {unitsListData.windSpeed.map((windSpeadData, i) => {
+                const formatData = windSpeadData
+                  .replace("/", "")
+                  .toLocaleLowerCase();
+
+                return (
+                  <DropDownListItem
+                    className={
+                      unit.windSpeadUnit === formatData ? "select" : ""
+                    }
+                    onClick={() =>
+                      dispatch({
+                        type: "changeWindSpeadUnit",
+                        payload: formatData,
+                      })
+                    }
+                    key={i}
+                  >
+                    {windSpeadData}
+                  </DropDownListItem>
+                );
+              })}
+              <DropDownListTitle>Precipitation</DropDownListTitle>
+              {unitsListData.precipitation.map((precData, i) => {
+                const formatData = precData
+                  .split(" ")[1]
+                  .slice(1, -1)
+                  .toLocaleLowerCase();
+                return (
+                  <DropDownListItem
+                    className={unit.precUnit === formatData ? "select" : ""}
+                    onClick={() =>
+                      dispatch({
+                        type: "changePrecUnit",
+                        payload: formatData,
+                      })
+                    }
+                    key={i}
+                  >
+                    {precData}
+                  </DropDownListItem>
+                );
+              })}
+            </DropDownList>
+          )}
         </Header>
         {/* Body App */}
 
         {/* Handle Error */}
         {tempStatus === "error" ? (
-          <Error
-            errMessage="We couldn't connect to the server (API error). Please try
-again in a few moments."
-            dispatch={dispatch}
-          />
+          //           <Error
+          //             errMessage="We couldn't connect to the server (API error). Please try
+          // again in a few moments."
+          //             dispatch={dispatch}
+          //           />
+          "test"
         ) : (
           <>
             <CitySearch>
@@ -266,6 +407,7 @@ again in a few moments."
                   tempStatus={tempStatus}
                   dispatch={dispatch}
                   weekDays={weekDays}
+                  isOpenDropDowns={isOpenDropDowns}
                 />
               </Main>
             )}
