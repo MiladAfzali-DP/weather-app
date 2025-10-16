@@ -1,0 +1,17 @@
+.citySearch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 3rem;
+  text-align: center;
+}
+.citySearch h1 {
+  font-size: 3rem;
+}
+
+@media (max-width: 480px) {
+  .citySearch h1 {
+    font-size: 1.7rem;
+  }
+}
