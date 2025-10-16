@@ -1,0 +1,12 @@
+.noResults {
+  margin-top: 2rem;
+  font-size: 1.3rem;
+  color: var(--neutral-100);
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .noResults {
+    margin-top: 5rem;
+  }
+}
