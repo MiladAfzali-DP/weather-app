@@ -2,14 +2,14 @@
   margin-top: 2rem;
   color: var(--neutral-200);
 }
-.df-wraper {
+.dfWraper {
   margin-top: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1rem;
 }
-.df-box {
+.dfBox {
   width: 100%;
   height: 8rem;
   display: flex;
@@ -18,18 +18,36 @@
   flex-direction: column;
   padding: 0.8rem 0.5rem;
 }
-.df-box span {
+.dfBox span {
   display: block;
 }
-.df-box div {
+.dfBox div {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.df-box div span {
+.dfBox div span {
   font-size: 0.8rem;
 }
-.df-box img {
+.dfBox img {
   width: 3rem;
+}
+
+@media (max-width: 480px) {
+  .dfWraper {
+    flex-wrap: wrap;
+  }
+  .dfBox {
+    width: clamp(5rem, 29%, 10rem);
+  }
+  .dfBox img {
+    width: 4rem;
+  }
+  .dfBox > span {
+    font-size: 1.2rem;
+  }
+  .dfBox div span {
+    font-size: 1rem;
+  }
 }

@@ -1,5 +1,5 @@
 import styles from "./Search.module.css";
-import searchIcon from "../../assets/images/icon-search.svg";
+
 import { useCallback, useEffect, useRef } from "react";
 import useFetchData from "../../hooks/useFetchData";
 import DropDownList from "../DropDownList/DropDownList";
@@ -35,7 +35,7 @@ export default function Search({ dispatch, city, results, selectCityId }) {
     <div className={styles.search}>
       {/* Search Box */}
       <div className={styles.input}>
-        <img src={searchIcon} />
+        <img src="./icon-search.svg" />
         <input
           ref={searchBox}
           type="text"

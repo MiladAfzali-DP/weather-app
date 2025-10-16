@@ -1,4 +1,4 @@
-import "./Temperature.css";
+import styles from "./Temperature.module.css";
 function Temperature({ tempStatus, tempData, dataImage }) {
   const data = new Date().toDateString().split(" ");
   const dataTime = {
@@ -11,13 +11,13 @@ function Temperature({ tempStatus, tempData, dataImage }) {
   return (
     <div
       className={
-        tempStatus === "loading" || !tempData ? "loading-temp" : "temp"
+        tempStatus === "loading" || !tempData ? styles.loadingTemp : styles.temp
       }
     >
       {/* Handle Loading */}
       {tempStatus === "loading" && (
         <>
-          <div className="loading-temp-dot">
+          <div className={styles.loadingTempDot}>
             <span></span>
             <span></span>
             <span></span>
@@ -29,7 +29,7 @@ function Temperature({ tempStatus, tempData, dataImage }) {
       {/* Show Temp */}
       {tempStatus === "finish" && tempData && (
         <>
-          <div className="temp__left">
+          <div className={styles.tempLeft}>
             <h4>
               {tempData[5].city}, {tempData[5].country}
             </h4>
@@ -38,16 +38,12 @@ function Temperature({ tempStatus, tempData, dataImage }) {
               {dataTime.year}
             </p>
           </div>
-          <div className="temp__right">
+          <div className={styles.tempRight}>
             <h3>
               {tempData[0]?.temp}
               {tempData[0]?.unit}
             </h3>
-            <img
-              src={`/src/assets/images/${dataImage.get(
-                tempData[6].weathercode
-              )}`}
-            />
+            <img src={`./${dataImage.get(tempData[6].weathercode)}`} />
           </div>
         </>
       )}

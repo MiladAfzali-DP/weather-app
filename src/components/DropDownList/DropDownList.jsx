@@ -25,7 +25,7 @@ export default function DropDownList({
       {/* Handle Error */}
       {status === "error" && (
         <p className={styles.loadingError}>
-          <img src="/src/assets/images/icon-error.svg" alt="" />
+          <img src="./icon-error.svg" alt="" />
           <span>{errMessage}</span>
         </p>
       )}
@@ -33,7 +33,7 @@ export default function DropDownList({
       {/* Handle Loading */}
       {status === "loading" && (
         <p className={styles.loadingError}>
-          <img src="/src/assets/images/icon-loading.svg" alt="" />
+          <img src="./icon-loading.svg" alt="" />
           <span>Search in progress...</span>
         </p>
       )}

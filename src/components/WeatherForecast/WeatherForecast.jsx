@@ -1,4 +1,4 @@
-import "./WeatherForecast.css";
+import styles from "./WeatherForecast.module.css";
 import Box from "../Box/Box";
 function WeatherForecast({ tempStatus, tempData }) {
   let wfDatas;
@@ -17,9 +17,9 @@ function WeatherForecast({ tempStatus, tempData }) {
       ["Precipitation", `${tempData[3].precipitation} ${tempData[3].unit}`],
     ];
   return (
-    <div className="wf">
+    <div className={styles.wf}>
       {wfDatas.map((wfData, i) => (
-        <Box className="wf-box" key={i}>
+        <Box className={styles.wfBox} key={i}>
           <span>{wfData[0]}</span>
           <span>{wfData[1]}</span>
         </Box>

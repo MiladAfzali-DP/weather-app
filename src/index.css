@@ -64,3 +64,18 @@ input {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--neutral-600);
 }
+.btn {
+  outline: 0;
+  border: 0;
+  background-color: var(--neutral-800);
+  border: 1px solid var(--neutral-700);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem;
+  border-radius: 0.5rem;
+  text-transform: capitalize;
+  cursor: pointer;
+}

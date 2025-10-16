@@ -1,4 +1,4 @@
-.loading-temp,
+.loadingTemp,
 .temp {
   width: 100%;
   height: 12rem;
@@ -9,20 +9,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-image: url(/src/assets/images/bg-today-large.svg);
+  background-image: url(./bg-today-large.svg);
   background-size: cover;
   background-position: center;
 }
-.temp__left h4 {
+.tempLeft h4 {
   font-size: 1.2rem;
   font-weight: 600;
 }
-.temp__left p {
+.tempLeft p {
   margin-top: 0.6rem;
   font-size: 0.75rem;
   color: var(--neutral-200);
 }
-.temp__right {
+.tempRight {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,15 +30,15 @@
   flex-direction: row-reverse;
 }
 
-.temp__right h3 {
+.tempRight h3 {
   font-size: 4rem;
   font-weight: 600;
   font-style: italic;
 }
-.temp__right img {
+.tempRight img {
   width: 4rem;
 }
-.loading-temp {
+.loadingTemp {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -47,29 +47,29 @@
   background-color: var(--neutral-800);
   border: 1px solid var(--neutral-700);
 }
-.loading-temp p {
+.loadingTemp p {
   font-size: 0.8rem;
 }
-.loading-temp-dot {
+.loadingTempDot {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
 }
-.loading-temp-dot span {
+.loadingTempDot span {
   width: 0.8rem;
   aspect-ratio: 1/1;
   border-radius: 50%;
   background-color: var(--neutral-200);
   animation: threeDotUpDown 0.6s ease-in-out infinite;
 }
-.loading-temp-dot span:nth-of-type(1) {
+.loadingTempDot span:nth-of-type(1) {
   animation-delay: 0ms;
 }
-.loading-temp-dot span:nth-of-type(2) {
+.loadingTempDot span:nth-of-type(2) {
   animation-delay: 120ms;
 }
-.loading-temp-dot span:nth-of-type(3) {
+.loadingTempDot span:nth-of-type(3) {
   animation-delay: 240ms;
 }
 @keyframes threeDotUpDown {
@@ -81,5 +81,16 @@
   }
   100% {
     transform: translateY(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .temp {
+    background-image: url(./bg-today-small.svg);
+    flex-direction: column;
+    justify-content: space-around;
+  }
+  .tempLeft {
+    text-align: center;
   }
 }

@@ -1,7 +1,7 @@
+import styles from "./HourlyForecast.module.css";
 import { useEffect, useState } from "react";
 import Button from "../Button/Button";
 import HourlyForecastItem from "../HourlyForecastItem/HourlyForecastItem";
-import "./HourlyForecast.css";
 import DropDownList from "../DropDownList/DropDownList";
 import DropDownListItem from "../DropDownListItem/DropDownListItem";
 function HourlyForecast({
@@ -46,8 +46,8 @@ function HourlyForecast({
     [selectStatus]
   );
   return (
-    <div className="hf">
-      <div className="hf__title">
+    <div className={styles.hf}>
+      <div className={styles.hfTitle}>
         <h4>Hourly Forecast</h4>
         <Button
           className="btn hf-btn"
@@ -81,7 +81,7 @@ function HourlyForecast({
           </DropDownList>
         )}
       </div>
-      <ul className="hf__list">
+      <ul className={styles.hfList}>
         {hfData &&
           Object.entries(hfData)?.[selectDay][1].map(
             (data, i) =>

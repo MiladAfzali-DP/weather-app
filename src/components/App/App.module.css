@@ -4,9 +4,3 @@
   color: var(--neutral-100);
   text-align: center;
 }
-
-@media (max-width: 480px) {
-  .noResults {
-    margin-top: 5rem;
-  }
-}

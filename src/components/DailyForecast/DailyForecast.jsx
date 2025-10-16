@@ -1,4 +1,4 @@
-import "./DailyForecast.css";
+import styles from "./DailyForecast.module.css";
 import Box from "../Box/Box";
 import Wraper from "../Wraper/Wraper";
 function DailyForecast({ dfData, tempStatus }) {
@@ -16,15 +16,15 @@ function DailyForecast({ dfData, tempStatus }) {
   });
 
   return (
-    <div className="df">
+    <div className={styles.df}>
       <h4>Daily Forecast</h4>
-      <Wraper className="df-wraper">
+      <Wraper className={styles.dfWraper}>
         {dfDatas?.map((dfData, i) => (
-          <Box className="df-box" key={i}>
+          <Box className={styles.dfBox} key={i}>
             {tempStatus === "finish" && (
               <>
                 <span>{dfData?.day}</span>
-                <img src={`/src/assets/images/${dfData?.icon}`} />
+                <img src={`./${dfData?.icon}`} />
                 <div>
                   <span>{dfData?.highestTemp}</span>
                   <span>{dfData?.lowestTemp}</span>

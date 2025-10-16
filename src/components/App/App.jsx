@@ -1,11 +1,10 @@
 // Css Import
-import "./App.css";
+import styles from "./App.module.css";
 
 // React Hook Import
 import { useEffect, useMemo, useReducer } from "react";
 
 // React Component Import
-import unitsIcon from "../../assets/images/icon-units.svg";
 import Header from "../Header/Header";
 import Logo from "../Logo/Logo";
 import Button from "../Button/Button";
@@ -279,7 +278,7 @@ function App() {
             className="btn"
             onClick={() => dispatch({ type: "openDropDown", payload: 1 })}
           >
-            <img src={unitsIcon} alt="" />
+            <img src="./icon-units.svg" alt="" />
             units
             <i
               className={`bi bi-caret-${
@@ -363,12 +362,11 @@ function App() {
 
         {/* Handle Error */}
         {tempStatus === "error" ? (
-          //           <Error
-          //             errMessage="We couldn't connect to the server (API error). Please try
-          // again in a few moments."
-          //             dispatch={dispatch}
-          //           />
-          "test"
+          <Error
+            errMessage="We couldn't connect to the server (API error). Please try
+          again in a few moments."
+            dispatch={dispatch}
+          />
         ) : (
           <>
             <CitySearch>
@@ -383,7 +381,7 @@ function App() {
 
             {/* Handle when Don't have any search */}
             {!tempData && tempStatus === "readyFetch" ? (
-              <p className="no-results">No search result found!</p>
+              <p className={styles.noResults}>No search result found!</p>
             ) : (
               <Main>
                 <WeatherDetails>

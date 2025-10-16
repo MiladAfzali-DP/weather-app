@@ -1,0 +1,9 @@
+.weatherDetails {
+  width: 63%;
+}
+
+@media (max-width: 480px) {
+  .weatherDetails {
+    width: 100%;
+  }
+}

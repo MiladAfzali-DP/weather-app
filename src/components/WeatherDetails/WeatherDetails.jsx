@@ -1,7 +1,7 @@
-import "./WeatherDetails.css";
+import styles from "./WeatherDetails.module.css";
 
 function WeatherDetails({ children }) {
-  return <div className="weather-details">{children}</div>;
+  return <div className={styles.weatherDetails}>{children}</div>;
 }
 
 export default WeatherDetails;

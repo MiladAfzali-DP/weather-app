@@ -8,7 +8,7 @@ function HourlyForecastItem({ data, now, tempStatus }) {
       {tempStatus === "finish" && (
         <>
           <div>
-            <img src={`/src/assets/images/${icon}`} />
+            <img src={`./${icon}`} />
             <span>
               {String(editTime).padStart(2, "0")} {editTime > 12 ? "PM" : "AM"}
             </span>
